@@ -1,0 +1,30 @@
+Lag et program som tegner en kjegle (cone) med 12 sidekanter, vha. TRIANGLE_FAN.
+
+Skjermbilde 2022-08-17 kl. 13.00.49.png
+
+Tips:
+
+Posisjoner og farger kan f.eks. genereres slik:
+
+let toPI = 2*Math.PI;
+let positions = [];
+let colors = [];
+
+let stepGrader = 360 / 12;
+let step = (Math.PI / 180) * stepGrader;
+let r=1, g=0, b=0, a=1; // Fargeverdier.
+
+// Startpunkt (toppen av kjegla):
+let x=0, y=2, z=0;
+positions = positions.concat(x,y,z); //NB! bruk av concat!!
+colors = colors.concat(r,g,b,a);
+for (let phi = 0.0; phi <= toPI; phi += step)
+{
+    x = Math.cos(phi);
+    y = 0;
+    z = Math.sin(phi);
+
+    positions = this.positions.concat(x,y,z);
+    g+=0.1; //Endrer litt på fargen for hver verteks.
+    colors = this.colors.concat(r,g,b,a);
+}

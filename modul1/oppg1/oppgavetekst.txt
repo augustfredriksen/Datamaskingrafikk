@@ -1,0 +1,12 @@
+
+
+
+
+I ditt nye kopi-prosjekt lager du en ny mappe under del1, kall den "hellopoint2".
+Kopier filene fra hellopoint-mappa til din nye mappe. Gjør deretter følgende endringer:
+
+Endre på bakgrunnsfargen.  x  
+Endre på punktstørrelsen, fra 10 til 20.   x 
+Flytt punktet til (-0.2, -0.3, 0) x 
+Flytt punktet til (2.0, 3.0, 0). Hvorfor vises ikke punktet? - Fordi det er utenfor koordinatene fra -1 til 1
+Endre fargen på "punktet" til blå x 

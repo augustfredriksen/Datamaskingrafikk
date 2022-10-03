@@ -1,0 +1,22 @@
+Lag et WebGL-program etter tidligere mønster som gjør følgende:
+
+a) Tegner 10 tilfeldige punkter med størrelse 4.
+
+b) Tegn to uavhengige linjer vha. LINES
+
+c) Tegn tre sammenhengende linjer vha. LINE_STRIP
+
+d) Tegn tre sammenhengende trekanter vha. TRIANGLE_STRIP
+
+   Sørg for å posisjonere disse (og kamera) slik at alt vises på skjermen.
+
+   Tips: Her må du endre første parameter til drawArrays(...) I forhold til hvilke primitive som skal tegnes.
+   Dersom man tegner uavhengige trekanter brukes drawArrays() slik:
+
+   gl.drawArrays(gl.TRIANGLES, 0, n);
+   dersom man tegner et sett uavhengige linjer gjør man:
+
+   gl.drawArrays(gl.LINES, 0, n);
+   osv.
+
+   Se også powerpoint og gjennomganger i modul 2.

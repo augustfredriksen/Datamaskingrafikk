@@ -1,0 +1,18 @@
+
+
+
+
+a) Ta utgangspunkt i /del1/hellotrianglesimple. Utvid programmet slik at det tegner to nye trekanter til venstre for den opprinnelige.
+   Tips: legg til nye vertekser. Bruk x,y og z-verdier i området [-1, +1].
+   Pass på å få riktige parameter i kall på gl.drawArrays(...).         x
+
+b) Sørg for at alle trekantene blir orange.       x
+
+c) Tegn trekantene vha. tre kall på drawArrays(...) i stedet for et kall. Tips: se på de to siste parametrene.          x
+
+d) Her skal du sette ulike farger på trekantene. Dette gjøres ved å endre både på javascriptprogrammet
+   og shaderne ved at vi knytter en farge til hver verteks.
+   Eksisterende verteksshader tar kun i mot posisjonsdata (x,y,z) vha. attribute vec3 aVeretexPosition.
+   Fargen settes foreløpig vha. uniform-variabelen uniform lowp vec4 uFragmentColor.
+   Det betyr at alle piksler får samme farge. Du skal nå i stedet knytte en farge til hver verteks.
+   Fragmentshaderens uniform-variable skal dermed fjernes.

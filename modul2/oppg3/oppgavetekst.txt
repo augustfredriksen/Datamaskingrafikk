@@ -1,0 +1,14 @@
+Modelltransformasjonen utføres vha. en modellmatrise.
+Vi kan f.eks. lage matriser for rotasjon, skalering eller forflytning av modellen (evt. kombinasjoner av disse).
+Hver modell har sin egen modelltransformasjon.
+
+a) Lag et program som viser en kube, sentrert om origo. Bruk sidekanter med lengde 2, dvs. fra -1 til +1 i alle akser.
+
+b) Lag en modellmatrise som nedskalerer modellen/kuben med 50% i alle akser.
+   Bruk debuggeren i nettleseren, sett stoppunkt i koden og kontroller at elementene i matrisene stemmer i forhold
+   til hva som er forventet (dvs. sjekk at verdiene for skalering ligger på rett plass i matrisa).
+
+c) Endre modellmatrisa slik at den flytter kuben 6 enheter på x-aksen og -8 på z-aksen.
+   Pass på hvor du har kamera. Sørg for å kontrollere innholdet i modellmatrisa slik at du kan verifisere innholdet.
+
+d) Kombiner foregående translasjon med en 45 graders rotasjon om z-aksen. Pass på rekkefølgen transformasjonene utføres i.

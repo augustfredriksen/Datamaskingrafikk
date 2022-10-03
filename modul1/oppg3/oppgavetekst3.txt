@@ -1,0 +1,13 @@
+Tegn koordinatsystem og pil
+
+Lag et nytt WebGL-program, etter mønster fra foregående.
+
+a) Tegn et sentrert koordinatsystemet med x- og y-akser. La x-aksen være rød og y-aksen grønn (få også med pilene på koordinataksene). 
+
+b) Tegn en blå 2D pil, som vist i figuren under.  Finn ut hvor mange trekanter du trenger.
+   Hver trekant består av 3 vertekser (og hver vertex består av tre float-verdier for posisjon og fire float-verdier for farge).
+
+   TIPS: Bruk gl.LINES som argument til drawArrays(...) for å tegne linjer.
+   Hvert linjestykke defineres av 2 vertekser.
+   Det betyr at du kan lage et eget buffer med 4 posisjoner og et buffer med 4 fargeverdier for å tegne koordinatsystemet.
+   Pilene på aksene kan tegnes vha. et egne buffer og gl.TRIANGLES.  
