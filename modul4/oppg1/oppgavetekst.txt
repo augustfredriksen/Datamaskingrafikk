@@ -1,0 +1,23 @@
+WebGL: Tegn en pyramide bestående av 5 sider, inkludert bunn, som vist her:
+
+ 
+
+pyramide.png
+
+Bunnen består av to trekanter.
+
+Teksturer sidene vha. teksturen du finner her:  
+
+pyramidetekstur.png
+
+Fila har størrelse 512x256 piksler og bakgrunnen er satt gjennomsiktig. Bruk ulike trekantteksturer på pyramidens ulike sider. Ta utgangspunkt i kodeeksemplene.
+
+Hjelpefigur:
+
+Skjermbilde 2022-09-19 kl. 13.31.04.png
+
+Tips: Slå på dybdetest. Forsøk også uten - hva skjer?
+
+//Enables depth testing
+gl.enable(gl.DEPTH_TEST);
+gl.depthFunc(gl.LESS);
