@@ -1,0 +1,123 @@
+Ta utgangspunkt i eksemplet under /del5_6_7/simplecamera og tilpass/utvid slik at programmet tegner to roterende (om y-aksen) kuler i stedet for trekantene.  
+
+Tema for oppgaven:
+- generere vertekser og indekser til en kule (ferdig kode)
+- animasjon & FPS
+- bruk av indeksbuffer og drawElements()
+
+Se også: http://www.songho.ca/opengl/gl_sphere.html (Lenker til en ekstern side.)
+
+a)
+
+Kula skal tegnes vha. et verteks- og en indeksbuffer. Bruk metoden under til å generere nødvendige verteks- og indeksdata. Tilhørende verteks og indeksbuffer genereres basert på disse (dvs. sphereVertices og sphereIndices).
+
+NB! Siden vi bruker indeksbuffer må tegning gjøres vha. drawElements() i stedet for drawArrays(). Se drawSphere() metoden under.
+
+function initSphereBuffers(gl) {
+   let positions = [];
+   let colors = [];
+   let indices = [];
+
+   // Basert på kode fra: http://learningwebgl.com/blog/?p=1253
+   let radius = 5;
+   let r=0.2,g=0.2,b=0.5,a=1;
+   let latitudeBands = 30;     //latitude: parallellt med ekvator.
+   let longitudeBands = 30;    //longitude: går fra nord- til sydpolen.
+
+   //Genererer vertekser:
+   for (let latNumber = 0; latNumber <= latitudeBands; latNumber++) {
+      let theta = latNumber * Math.PI / latitudeBands;
+      let sinTheta = Math.sin(theta);
+      let cosTheta = Math.cos(theta);
+
+      for (let longNumber = 0; longNumber <= longitudeBands; longNumber++) {
+         let phi = longNumber * 2 * Math.PI / longitudeBands;
+         let sinPhi = Math.sin(phi);
+         let cosPhi = Math.cos(phi);
+
+         let x = cosPhi * sinTheta;
+         let y = cosTheta;
+         let z = sinPhi * sinTheta;
+
+         positions.push(radius * x);
+         positions.push(radius * y);
+         positions.push(radius * z);
+
+         colors.push(r);
+         colors.push(g);
+         colors.push(b);
+         colors.push(a);
+      }
+   }
+
+   //Genererer indeksdata for å knytte sammen verteksene:
+   for (let latNumber = 0; latNumber < latitudeBands; latNumber++) {
+      for (let longNumber = 0; longNumber < longitudeBands; longNumber++) {
+         let first = (latNumber * (longitudeBands + 1)) + longNumber;
+         let second = first + longitudeBands + 1;
+         indices.push(first);
+         indices.push(second);
+         indices.push(first + 1);
+
+         indices.push(second);
+         indices.push(second + 1);
+         indices.push(first + 1);
+      }
+   }
+
+   const positionBuffer = gl.createBuffer();
+   gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(positions), gl.STATIC_DRAW);
+   gl.bindBuffer(gl.ARRAY_BUFFER, null);
+
+   const colorBuffer = gl.createBuffer();
+   gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
+   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors), gl.STATIC_DRAW);
+   gl.bindBuffer(gl.ARRAY_BUFFER, null);
+
+   //Indeksbuffer: oppretter, binder og skriver data til bufret:
+   const indexBuffer = gl.createBuffer();
+   gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
+   gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(indices), gl.STATIC_DRAW);
+
+   return  {
+      position: positionBuffer,
+      color: colorBuffer,
+      index: indexBuffer,
+      vertexCount: positions.length/3,
+      indicesCount: indices.length
+   };
+}
+I tillegg er deler av drawSphere-metoden gitt (kalles typisk fra draw()). Merk bruk av drawElements(). 
+
+Fyll inn det som mangler:
+
+function drawSphere(renderInfo, camera) {
+   <== FYLL INN DET SOM MANGLER ==>
+   // Aktiverer INDEKS-buffer før tegning vha. drawElements(...):
+   renderInfo.gl.bindBuffer(renderInfo.gl.ELEMENT_ARRAY_BUFFER, renderInfo.sphereBuffers.index);
+
+   // Tegner kula som wireframe: 
+   renderInfo.gl.drawElements(renderInfo.gl.LINE_STRIP, renderInfo.sphereBuffers.indicesCount, renderInfo.gl.UNSIGNED_SHORT, 0);
+}
+Pass på sette modellmatrisen før kall på drawSphere(), f.eks. i draw().
+
+NB! Kontroller at du bruker korrekte shadere, må se slik ut:
+
+// Verteksshader:
+attribute vec3 aVertexPosition;
+attribute vec4 aVertexColor;
+uniform mat4 uModelViewMatrix;
+uniform mat4 uProjectionMatrix;
+varying lowp vec4 vColor;
+void main(void) {
+    gl_Position = uProjectionMatrix * uModelViewMatrix * vec4(aVertexPosition, 1.0);
+    vColor = aVertexColor;
+}
+
+
+// Fragmentshader:
+varying lowp vec4 vColor;
+void main(void) {
+    gl_FragColor = vColor;
+}
