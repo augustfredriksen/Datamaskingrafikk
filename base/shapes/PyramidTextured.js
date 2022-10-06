@@ -38,7 +38,7 @@ export class Pyramid extends BaseShape {
 
     setColors() {
         //Samme farge på alle sider:
-        for (let i = 0; i < 12; i++) {
+        for (let i = 0; i < 36; i++) {
             this.colors.push(this.color.red, this.color.green, this.color.blue, this.color.alpha);
         }
     }
@@ -85,9 +85,9 @@ export class Pyramid extends BaseShape {
             imageLoader.load((textureImages) => {
                     const textureImage = textureImages[0];
                     if (isPowerOfTwo1(textureImage.width) && isPowerOfTwo1(textureImage.height)) {
-                        this.pyramidTexture = this.gl.createTexture();
+                        this.rectangleTexture = this.gl.createTexture();
                         //Teksturbildet er nå lastet fra server, send til GPU:
-                        this.gl.bindTexture(this.gl.TEXTURE_2D, this.pyramidTexture);
+                        this.gl.bindTexture(this.gl.TEXTURE_2D, this.rectangleTexture);
 
                         //Unngaa at bildet kommer opp-ned:
                         this.gl.pixelStorei(this.gl.UNPACK_FLIP_Y_WEBGL, true);

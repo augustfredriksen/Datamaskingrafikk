@@ -3,9 +3,7 @@
     buffer og draw for PaperMan
 */
 import {Stack} from '../../base/helpers/Stack.js';
-import {Cone} from '../../base/shapes/Cone.js';
-import {CubeTextured} from "../../base/shapes/CubeTextured.js";
-import { Pyramid } from '../../base/shapes/pyramid.js';
+import { Cylinder } from '../../base/shapes/CylinderTextured.js';
 
 /**
  * Klasse som implementerer en sammensatt figur.
@@ -16,15 +14,8 @@ export class CompositeTexturedHouse {
         this.app = app;
 
         this.stack = new Stack();
-
-        this.cubeTextured = new CubeTextured(app, {red:0.8, green:0.0, blue:0.6, alpha:1}, false);
-        this.cubeTextured.initBuffers();
-
-        this.cone = new Cone(app);
-        this.cone.initBuffers();
-
-        this.pyramid = new Pyramid(app, {red:0.8, green:0.0, blue:0.6, alpha:1}, false);
-        this.pyramid.initBuffers();
+        this.Cylinder = new Cylinder(app, {red:0.8, green:0.0, blue:0.6, alpha:1}, false);
+        this.Cylinder.initBuffers();
 
         this.translationX = 0;
     }
@@ -53,18 +44,10 @@ export class CompositeTexturedHouse {
 
         // Tegner diverse:
         modelMatrix = this.stack.peekMatrix();
-        modelMatrix.translate(0,2,0);
-        modelMatrix.scale(2,0.5,2);
-        this.cone.draw(shaderInfo, elapsed, modelMatrix);
-        modelMatrix = this.stack.peekMatrix();
-        modelMatrix.translate(0,0,5);
-        modelMatrix.scale(3, 3, 3);
-        this.pyramid.draw(textureShaderInfo, elapsed, modelMatrix);
 
-        modelMatrix = this.stack.peekMatrix();
-        modelMatrix.translate(0,1,0);
-        this.cubeTextured.draw(textureShaderInfo, elapsed, modelMatrix);
-
+        modelMatrix.translate(0, 2, 0);
+        modelMatrix.scale(1, 1, 1);
+        this.Cylinder.draw(textureShaderInfo, elapsed, modelMatrix);
         //Tømmer stacken ...:
         this.stack.empty();
     }

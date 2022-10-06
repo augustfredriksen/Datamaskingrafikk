@@ -38,8 +38,8 @@ export function main() {
 	};
 
 	for (let i=0; i < renderInfo.SPHERE_COUNT; i++) {
-		let x = -50 + Math.random() * 50 * 2;
-		let z = -50 + Math.random() * 50 * 2;
+		let x = -500 + Math.random() * 500 * 2;
+		let z = -500 + Math.random() * 500 * 2;
 		let scale = Math.random();
 		renderInfo.spheres[i] = {
 		  xpos: x,
@@ -403,9 +403,7 @@ function drawSolarSystem(renderInfo, camera) {
 
 	drawEarth(renderInfo.gl, camera, renderInfo.baseShaderInfo, renderInfo.planetsBuffer, renderInfo.planetsAnimation);
 	drawMoon(renderInfo.gl, camera, renderInfo.baseShaderInfo, renderInfo.planetsBuffer, renderInfo.planetsAnimation);
-	for(let i = 0; i < 1000; i++) {
-		drawSphere(renderInfo.gl, camera, renderInfo.baseShaderInfo, renderInfo.planetsBuffer, renderInfo.spheres)
-	}
+	drawSphere(renderInfo.gl, camera, renderInfo.baseShaderInfo, renderInfo.planetsBuffer, renderInfo.spheres, renderInfo.SPHERE_COUNT)
 	
 }
 
@@ -445,16 +443,27 @@ function drawMoon(gl, camera, baseShaderInfo, planetsBuffer, planetsAnimation) {
 	gl.drawElements(gl.LINE_STRIP, planetsBuffer.indicesCount, gl.UNSIGNED_SHORT, 0);
 }
 
-function drawSphere(gl, camera, baseShaderInfo, planetsBuffer, spheres) {
-	let modelMatrix = new Matrix4();
-	modelMatrix.setIdentity();
-	modelMatrix.translate(spheres[0].xpos, 0, spheres[0].zpos);
-	modelMatrix.scale(spheres[0].scale, spheres[0].scale, spheres[0].scale);
-	camera.set();
+function drawSphere(gl, camera, baseShaderInfo, planetsBuffer, spheres, count) {
 
-	let modelviewMatrix = new Matrix4(camera.viewMatrix.multiply(modelMatrix));
-	gl.uniformMatrix4fv(baseShaderInfo.uniformLocations.modelViewMatrix, false, modelviewMatrix.elements);
-	gl.uniformMatrix4fv(baseShaderInfo.uniformLocations.projectionMatrix, false, camera.projectionMatrix.elements);
+	for (let i = 0; i < count; i++) {
+		let sphereInfo = spheres[i];
+		let xpos = sphereInfo.xpos;
+		let zpos = sphereInfo.zpos;
+		let scale = sphereInfo.scale;
 
-	gl.drawElements(gl.TRIANGLES, planetsBuffer.indicesCount, gl.UNSIGNED_SHORT, 0);
+		let modelMatrix = new Matrix4();
+		modelMatrix.setIdentity();
+		modelMatrix.translate(xpos, 0, zpos);
+		modelMatrix.scale(scale, scale, scale);
+
+		camera.set();
+		let modelviewMatrix = new Matrix4(camera.viewMatrix.multiply(modelMatrix));
+		
+		gl.uniformMatrix4fv(baseShaderInfo.uniformLocations.modelViewMatrix, false, modelviewMatrix.elements);
+		gl.uniformMatrix4fv(baseShaderInfo.uniformLocations.projectionMatrix, false, camera.projectionMatrix.elements);
+	
+		gl.drawElements(gl.LINE_STRIP, planetsBuffer.indicesCount, gl.UNSIGNED_SHORT, 0);
+	}
+		
+	
 }

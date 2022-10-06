@@ -1,0 +1,1 @@
+Ta utgangspunkt i tidligere eksempler og lag et webgl-program som teksturerer en sylinder. Bruk selvvalgte teksturer/bilder. Bruk .png filer.

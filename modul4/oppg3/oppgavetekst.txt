@@ -1,0 +1,98 @@
+Lag en WebGL applikasjon som tegner en "torus" (smultring) fargelagt og/eller som wireframe. 
+
+Tips:
+
+Tegn vha. drawElements() og indeksbufferet. Du har gitt følgende funksjon som genererer verteksposisjoner, indekser m.m.:
+
+function initTorusBuffers(gl) {
+   const color = {red:0.8, green:0.1, blue:0.6, alpha:1};
+   const slices = 10;
+   const loops = 200;
+   const inner_rad = 0.6;
+   const outer_rad = 3;
+
+   let positions = [];
+   let colors = [];
+   let indices = [];
+   let textureCoordinates = [];
+   let normals = [];
+
+   for (let slice = 0; slice <= slices; ++slice) {
+      const v = slice / slices;
+      const slice_angle = v * 2 * Math.PI;
+      const cos_slices = Math.cos(slice_angle);
+      const sin_slices = Math.sin(slice_angle);
+      const slice_rad = outer_rad + inner_rad * cos_slices;
+
+      for (let loop = 0; loop <= loops; ++loop) {
+         const u = loop / loops;
+         const loop_angle = u * 2 * Math.PI;
+         const cos_loops = Math.cos(loop_angle);
+         const sin_loops = Math.sin(loop_angle);
+
+         const x = slice_rad * cos_loops;
+         const y = slice_rad * sin_loops;
+         const z = inner_rad * sin_slices;
+
+         //Position:
+         positions.push(x, y, z);
+         //Color:
+         colors.push(color.red, color.green, color.blue, color.alpha);
+         //Texture coordinates:
+         textureCoordinates.push(u);
+         textureCoordinates.push(v);
+         //Normals:
+         normals.push(
+            cos_loops * sin_slices,
+            sin_loops * sin_slices,
+            cos_slices);
+      }
+   }
+
+   // 0  1  2  3  4  5
+   // 6  7  8  9  10 11
+   // 12 13 14 15 16 17
+   const vertsPerSlice = loops + 1;
+
+   for (let i = 0; i < slices; ++i) {
+      let v1 = i * vertsPerSlice;
+      let v2 = v1 + vertsPerSlice;
+
+      for (let j = 0; j < loops; ++j) {
+
+         indices.push(v1);
+         indices.push(v1 + 1);
+         indices.push(v2);
+
+         indices.push(v2);
+         indices.push(v1 + 1);
+         indices.push(v2 + 1);
+
+         v1 += 1;
+         v2 += 1;
+      }
+   }
+
+   const positionBuffer = gl.createBuffer();
+   gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(positions), gl.STATIC_DRAW);
+   gl.bindBuffer(gl.ARRAY_BUFFER, null);
+
+   const colorBuffer = gl.createBuffer();
+   gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
+   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors), gl.STATIC_DRAW);
+   gl.bindBuffer(gl.ARRAY_BUFFER, null);
+
+   //Indeksbuffer: oppretter, binder og skriver data til bufret:
+   const indexBuffer = gl.createBuffer();
+   gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
+   gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(indices), gl.STATIC_DRAW);
+
+   return  {
+      position: positionBuffer,
+      color: colorBuffer,
+      index: indexBuffer,
+      vertexCount: positions.length/3,
+      indicesCount: indices.length
+   };
+}

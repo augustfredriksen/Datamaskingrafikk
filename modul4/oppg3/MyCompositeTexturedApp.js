@@ -1,6 +1,6 @@
 import {BaseApp} from '../../base/BaseApp.js';
 import {WebGLShader} from '../../base/helpers/WebGLShader.js';
-import {CompositeTexturedHouse} from './TexturedPyramid.js';
+import {CompositeTexturedHouse} from './TexturedTorus.js';
 import {XZPlane} from "../../base/shapes/XZPlane.js";
 
 /**

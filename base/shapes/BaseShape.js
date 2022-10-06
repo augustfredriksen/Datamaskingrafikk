@@ -14,8 +14,10 @@ export class BaseShape {
 
 		// Vertex info arrays:
 		this.positions = [];
+		this.indexes = [];
 		this.colors = [];
 	    this.textureCoordinates = [];
+	
 
 		// Referanser til alle buffer:
 		this.buffers = {
@@ -54,6 +56,12 @@ export class BaseShape {
 			this.gl.bindBuffer(this.gl.ARRAY_BUFFER, null);
 		}
 
+		if (this.indexes.length > 0) {
+			this.buffers.index = this.gl.createBuffer();
+			this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, this.buffers.index);
+			this.gl.bufferData(this.gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(this.indexes), this.gl.STATIC_DRAW);
+		}
+
 		//NB!
 		this.initTextures();
 
@@ -79,6 +87,10 @@ export class BaseShape {
 	 */
 	setPositions() {
 		this.positions = [];
+	}
+
+	setIndexes() {
+		this.indexes = [];
 	}
 
 	/**
@@ -109,6 +121,22 @@ export class BaseShape {
 			this.stride,
 			this.offset);
 		this.gl.enableVertexAttribArray(shaderInfo.attribLocations.vertexPosition);
+	}
+
+	connectIndexAttritube(shaderInfo) {
+		if(!this.buffers.index)
+		return;
+
+		this.numComponents = 3;
+		this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.buffers.index);
+		this.gl.vertexAttribPointer(
+			shaderInfo.attribLocations.vertexIndex,
+			this.numComponents,
+			this.type,
+			this.normalize,
+			this.stride,
+			this.offset);
+		this.gl.enableVertexAttribArray(shaderInfo.attribLocations.vertexIndex);
 	}
 
     /**
