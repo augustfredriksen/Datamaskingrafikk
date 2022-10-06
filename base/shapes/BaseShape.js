@@ -15,11 +15,13 @@ export class BaseShape {
 		// Vertex info arrays:
 		this.positions = [];
 		this.colors = [];
+	    this.textureCoordinates = [];
 
 		// Referanser til alle buffer:
 		this.buffers = {
 			position: undefined,
-			color: undefined
+			color: undefined,
+			texture: undefined
 		};
 
 		// Brukes i connectPositionAttribute() m.fl.:
@@ -52,8 +54,16 @@ export class BaseShape {
 			this.gl.bindBuffer(this.gl.ARRAY_BUFFER, null);
 		}
 
+		//NB!
+		this.initTextures();
+
 		this.vertexCount = this.positions.length/3;
     }
+
+	//NB! Denne overstyres av subklasser dersom tekstur er aktuelt.
+	initTextures() {
+		// Gjør ingenting. Må overstyres dersom aktuelt.
+	}
 
 	/**
 	 * Kan overstyres av subklasser.
@@ -61,6 +71,7 @@ export class BaseShape {
 	createVertices() {
 		this.setPositions();
 		this.setColors();
+		this.setTextureCoordinates();
 	}
 
 	/**
@@ -75,6 +86,10 @@ export class BaseShape {
 	 */
 	setColors() {
 		this.colors = [];
+	}
+
+	setTextureCoordinates() {
+		this.textureCoordinates = [];
 	}
 
     /**
@@ -115,6 +130,34 @@ export class BaseShape {
 		this.gl.enableVertexAttribArray(shaderInfo.attribLocations.vertexColor);
 	}
 
+	/**
+	 * Kopler til og aktiverer teksturkoordinat-bufferet.
+	 */
+	connectTextureAttribute(shaderInfo) {
+		if (!this.buffers.texture || !shaderInfo.attribLocations.vertexTextureCoordinate)
+			return;
+
+		this.numComponents = 2;    //NB!
+		//Bind til teksturkoordinatparameter i shader:
+		this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.buffers.texture);
+		this.gl.vertexAttribPointer(
+			shaderInfo.attribLocations.vertexTextureCoordinate,
+			this.numComponents,
+			this.type,
+			this.normalize,
+			this.stride,
+			this.offset);
+		this.gl.enableVertexAttribArray(shaderInfo.attribLocations.vertexTextureCoordinate);
+
+		//Aktiver teksturenhet (0):
+		this.gl.activeTexture(this.gl.TEXTURE0);
+		this.gl.bindTexture(this.gl.TEXTURE_2D, this.rectangleTexture);
+		//Send inn verdi som indikerer hvilken teksturenhet som skal brukes (her 0):
+		let samplerLoc = this.gl.getUniformLocation(shaderInfo.program, shaderInfo.uniformLocations.sampler);
+		this.gl.uniform1i(samplerLoc, 0);
+
+	}
+
 	setCameraMatrices(shaderInfo, modelMatrix) {
 		this.camera.set();  //NB!
 		let modelviewMatrix = this.camera.getModelViewMatrix(modelMatrix);
@@ -133,6 +176,7 @@ export class BaseShape {
 		// Kople til buffer og send verdier til shaderne:
 		this.connectPositionAttribute(shaderInfo);
 		this.connectColorAttribute(shaderInfo);
+		this.connectTextureAttribute(shaderInfo);
 
 		// Send matriser til shaderen:
 		this.setCameraMatrices(shaderInfo, modelMatrix);

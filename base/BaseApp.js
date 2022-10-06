@@ -13,7 +13,9 @@ export class BaseApp {
 		this.gl = this.canvas.gl;
 		this.drawCoord = drawCoord;
 
-		this.initBaseShaders();
+		this.textureShaderInfo = undefined;
+
+		this.initShaders();
 		this.initKeyPress();
 
 		// Brukes til å beregne og vise FPS (Frames Per Seconds):
@@ -42,7 +44,7 @@ export class BaseApp {
 	 * NB! Shaderkode og baseShaderInfo-objektet henger sammen.
 	 * SHADERE leses IKKE fra html-fila.
 	 */
-	initBaseShaders() {
+	initShaders() {
 		// SHADERPAR1: Standard/enkel shader (posisjon og farge):
 		const vertexShaderSourceBase =`
 			attribute vec4 aVertexPosition;

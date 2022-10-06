@@ -1,94 +1,95 @@
 'use strict';
 import {BaseShape} from './BaseShape.js';
+
 /**
- * Setter this.positions & this.colors.
- * Tegnes vha. gl.TRIANGLE_FAN
+ * Setter this.positions, this.colors for en kube.
+ * Tegnes vha. gl.LINE_STRIP eller gl.TRIANGLES.
  */
 export class Cube extends BaseShape {
-    constructor(app, color = {red:0.1, green:0.1, blue:0.1, alpha:1}, sectors=12) {
+    constructor(app, color = {red:0.8, green:0.0, blue:0.6, alpha:1}, wireFrame=false) {
         super(app);
         this.color = color;
-        this.sectors = sectors;
+        this.wireFrame = wireFrame;
     }
-    
 
-    createVertices() {
-        
-        super.createVertices();
-
+    setPositions() {
+        //36 stk posisjoner:
         this.positions = [
-            		    // Front
-			1, 1, 1,
-			1, -1, 1,
-			-1, 1, 1,
-			-1, 1, 1,
-			1, -1, 1,
-			-1, -1, 1,
-		
-			// Left
-			-1, 1, 1,
-			-1, -1, 1,
-			-1, 1, -1,
-			-1, 1, -1,
-			-1, -1, 1,
-			-1, -1, -1,
-		
-			// Back
-			-1, 1, -1,
-			-1, -1, -1,
-			1, 1, -1,
-			1, 1, -1,
-			-1, -1, -1,
-			1, -1, -1,
-		
-			// Right
-			1, 1, -1,
-			1, -1, -1,
-			1, 1, 1,
-			1, 1, 1,
-			1, -1, 1,
-			1, -1, -1,
-		
-			// Top
-			1, 1, 1,
-			1, 1, -1,
-			1, 1, 1,
-			1, 1, 1,
-			1, 1, -1,
-			1, 1, -1,
-		
-			// Bottom
-			1, -1, 1,
-			1, -1, -1,
-			-1, -1, 1,
-			-1, -1, 1,
-			1, -1, -1,
-			-1, -1, -1,
+            //Forsiden (pos):
+            -1, 1, 1,
+            -1,-1, 1,
+            1,-1, 1,
+
+            -1,1,1,
+            1, -1, 1,
+            1,1,1,
+
+            //H�yre side:
+
+            1,1,1,
+            1,-1,1,
+            1,-1,-1,
+
+            1,1,1,
+            1,-1,-1,
+            1,1,-1,
+
+            //Baksiden (pos):
+            1,-1,-1,
+            -1,-1,-1,
+            1, 1,-1,
+
+            -1,-1,-1,
+            -1,1,-1,
+            1,1,-1,
+
+            //Venstre side:
+            -1,-1,-1,
+            -1,1,1,
+            -1,1,-1,
+
+            -1,-1,1,
+            -1,1,1,
+            -1,-1,-1,
+
+            //Topp:
+            -1,1,1,
+            1,1,1,
+            -1,1,-1,
+
+            -1,1,-1,
+            1,1,1,
+            1,1,-1,
+
+            //Bunn:
+            -1,-1,-1,
+            1,-1,1,
+            -1,-1,1,
+
+            -1,-1,-1,
+            1,-1,-1,
+            1,-1,1,
         ];
+        this.vertexCount = this.positions/3;
+    }
 
-        function randomColor() {
-            return [Math.random(), Math.random(), Math.random(), 1.0];
-        }
-        
-
-        this.colors = [];
-        for (let face = 0; face < 6; face++) {
-        let faceColor = randomColor();
-        for (let vertex = 0; vertex < 6; vertex++) {
-            this.colors.push(...faceColor);
+    setColors() {
+        //Samme farge på alle sider:
+        for (let i = 0; i < 36; i++) {
+            this.colors.push(this.color.red, this.color.green, this.color.blue, this.color.alpha);
         }
     }
-        
-        
 
-
-
+    handleKeys(elapsed) {
+        // implementeres ved behov
     }
 
     draw(shaderInfo, elapsed, modelMatrix = (new Matrix4()).setIdentity()) {
         super.draw(shaderInfo, elapsed, modelMatrix);
-        this.gl.drawArrays(this.gl.TRIANGLES, 0, this.vertexCount);
+        if (this.wireFrame) {
+            this.gl.drawArrays(this.gl.LINE_STRIP, 0, this.vertexCount);
+        } else {
+            this.gl.drawArrays(this.gl.TRIANGLES, 0, this.vertexCount);
+        }
     }
 }
-
-
