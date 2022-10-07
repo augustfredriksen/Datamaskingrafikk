@@ -30,10 +30,10 @@ export class CompositeWheel {
         //this.cone.handleKeys(elapsed);
         // Flytter hele figuren:
         if (this.app.currentlyPressedKeys[89]) {    //Y
-            this.translationX = this.translationX - 1*elapsed;
+            this.translationX = this.translationX + 1*elapsed;
         }
         if (this.app.currentlyPressedKeys[85]) {    //U
-            this.translationX = this.translationX + 1*elapsed;
+            this.translationX = this.translationX - 1*elapsed;
         }
     }
 

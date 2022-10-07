@@ -38,7 +38,7 @@ export class CompositeCompositeFigure {
         modelMatrix.setIdentity();
 
         // Tegner:
-        modelMatrix.translate(this.translationX, 0, 0);
+        modelMatrix.translate(-this.translationX*2, 0, 0);
         modelMatrix.scale(.5, .5, .5);
         this.compositeFigure1.draw(shaderInfo, texturedShaderInfo, elapsed, modelMatrix);
     }
