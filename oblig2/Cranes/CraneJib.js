@@ -3,19 +3,19 @@
     buffer og draw for PaperMan
 */
 import {Stack} from '../../base/helpers/Stack.js';
-import {CompositeFigure} from "./CompositeFigure.js";
+import { Scaffold } from './Scaffold.js';
 
 /**
  * Klasse som implementerer en sammensatt figur.
  */
-export class CompositeCompositeFigure {
+export class CraneJib {
 
     constructor(app) {
         this.app = app;
 
         this.stack = new Stack();
 
-        this.compositeFigure1 = new CompositeFigure(this.app);
+        this.scaffold = new Scaffold(app);
 
         this.translationX = 0;
     }
@@ -24,7 +24,6 @@ export class CompositeCompositeFigure {
         // Dersom ev. del-figur skal animeres håndterer den det selv.
         //this.cone.handleKeys(elapsed);
         // Flytter hele figuren:
-        this.compositeFigure1.handleKeys(elapsed);
         if (this.app.currentlyPressedKeys[89]) {    //Y
             this.translationX = this.translationX + 1*elapsed;
         }
@@ -34,13 +33,19 @@ export class CompositeCompositeFigure {
     }
 
     //MERK: Kaller ikke super.draw() siden klassen ikke arver fra BaseShape:
-    draw(shaderInfo, texturedShaderInfo, elapsed, modelMatrix = new Matrix4()) {
-        modelMatrix.setIdentity();
+    draw(textureShaderInfo, elapsed, modelMatrix = new Matrix4()) {
 
-        // Tegner:
-        modelMatrix.translate(this.translationX, 0, 0);
-        modelMatrix.scale(.5, .5, .5);
-        this.compositeFigure1.draw(shaderInfo, texturedShaderInfo, elapsed, modelMatrix);
+        this.stack.pushMatrix(modelMatrix);	 	//Legges på toppen av stacken.
+
+        //Stillasparti -- Vertikalt
+        for (let i = 0; i <= 8; i++) {
+            modelMatrix = this.stack.peekMatrix();
+            modelMatrix.translate(0, i*3, 0);
+            this.scaffold.draw(textureShaderInfo, elapsed, modelMatrix);
+        }
+
+        //Tømmer stacken ...:
+        this.stack.empty();
     }
 }
 

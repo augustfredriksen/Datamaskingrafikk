@@ -7,7 +7,7 @@ import {isPowerOfTwo1} from "../lib/utility-functions.js";
  * Setter this.positions, this.colors og this.textureCoordinates for en kube.
  * Tegnes vha. gl.LINE_STRIP eller gl.TRIANGLES.
  */
-export class Pipe extends BaseShape {
+export class Wire extends BaseShape {
     constructor(app, color = {red:0.8, green:0.0, blue:0.6, alpha:1}, wireFrame=false) {
         super(app);
         this.color = color;
@@ -114,7 +114,7 @@ export class Pipe extends BaseShape {
         if (this.wireFrame) {
             this.gl.drawArrays(this.gl.LINE_STRIP, 0, this.vertexCount);
         } else {
-            this.gl.drawArrays(this.gl.TRIANGLE_STRIP, 0, this.vertexCount);
+            this.gl.drawArrays(this.gl.LINE_STRIP, 0, this.vertexCount);
         }
     }
 }

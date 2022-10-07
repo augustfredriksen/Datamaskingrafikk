@@ -4,7 +4,7 @@
 */
 import {Stack} from '../../base/helpers/Stack.js';
 import {Pipe} from '../../base/shapes/CranePipe.js';
-import { Sphere } from '../base/shapes/CraneSphere.js';
+import { Sphere } from '../../base/shapes/CraneSphere.js';
 
 /**
  * Klasse som implementerer en sammensatt figur.
@@ -40,7 +40,7 @@ export class Scaffold {
     //MERK: Kaller ikke super.draw() siden klassen ikke arver fra BaseShape:
     draw(textureShaderInfo, elapsed, modelMatrix = new Matrix4()) {
         const sphereScale = .05;
-        const pipeScale = .2;
+        const pipeScale = .1;
 
         const pipeHeight = 4;
         const pipeWidth = 2;

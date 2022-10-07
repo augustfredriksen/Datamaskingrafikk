@@ -32,8 +32,6 @@ export class Cylinder extends BaseShape {
       
       this.positions = this.positions.concat(vert1, 0);
       this.positions = this.positions.concat(vert1, -8);
-
-
         }
     }
 

@@ -30,10 +30,10 @@ export class CompositeWheel {
         //this.cone.handleKeys(elapsed);
         // Flytter hele figuren:
         if (this.app.currentlyPressedKeys[89]) {    //Y
-            this.translationX = this.translationX + 1*elapsed;
+            this.translationX = this.translationX - 1*elapsed;
         }
         if (this.app.currentlyPressedKeys[85]) {    //U
-            this.translationX = this.translationX - 1*elapsed;
+            this.translationX = this.translationX + 1*elapsed;
         }
     }
 
@@ -45,11 +45,13 @@ export class CompositeWheel {
         modelMatrix = this.stack.peekMatrix();
         modelMatrix.translate(0, 0, 0);
         modelMatrix.scale(1, 1, 1);
+        modelMatrix.rotate(this.translationX*60, 0, 0, 1);
         this.tire.draw(textureShaderInfo, elapsed, modelMatrix);
 
         modelMatrix = this.stack.peekMatrix();
         modelMatrix.translate(0, 0, 0);
         modelMatrix.scale(1, 1, 1);
+        modelMatrix.rotate(this.translationX*60, 0, 0, 1);
         this.rim.draw(textureShaderInfo, elapsed, modelMatrix);
 
         //Tømmer stacken ...:

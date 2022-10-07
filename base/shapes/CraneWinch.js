@@ -7,7 +7,7 @@ import {isPowerOfTwo1} from "../lib/utility-functions.js";
  * Setter this.positions, this.colors og this.textureCoordinates for en kube.
  * Tegnes vha. gl.LINE_STRIP eller gl.TRIANGLES.
  */
-export class Pipe extends BaseShape {
+export class Winch extends BaseShape {
     constructor(app, color = {red:0.8, green:0.0, blue:0.6, alpha:1}, wireFrame=false) {
         super(app);
         this.color = color;
@@ -16,62 +16,134 @@ export class Pipe extends BaseShape {
 
     setPositions() {
         //36 stk posisjoner:
-        this.positions = []
-        for (var i = 0.0; i <= 360; i++) {
-      // degrees to radians
-      var j = i * Math.PI / 180;
-      // X Y Z
-      var vert1 = [
-        Math.cos(j),
-        Math.sin(j),
-      ];
-      var vert2 = [
-        Math.cos(j),
-        Math.sin(j),
-      ];
-      
-      this.positions = this.positions.concat(vert1, 0);
-      this.positions = this.positions.concat(vert1, 1);
+        this.positions = [
+            //Forsiden (pos):
+            -1, 1, 1,
+            -1,-1, 1,
+            1,-1, 1,
 
+            -1,1,1,
+            1, -1, 1,
+            1,1,1,
 
-        }
+            //H�yre side:
+
+            1,1,1,
+            1,-1,1,
+            1,-1,-1,
+
+            1,1,1,
+            1,-1,-1,
+            1,1,-1,
+
+            //Baksiden (pos):
+            1,-1,-1,
+            -1,-1,-1,
+            1, 1,-1,
+
+            -1,-1,-1,
+            -1,1,-1,
+            1,1,-1,
+
+            //Venstre side:
+            -1,-1,-1,
+            -1,1,1,
+            -1,1,-1,
+
+            -1,-1,1,
+            -1,1,1,
+            -1,-1,-1,
+
+            //Topp:
+            -1,1,1,
+            1,1,1,
+            -1,1,-1,
+
+            -1,1,-1,
+            1,1,1,
+            1,1,-1,
+
+            //Bunn:
+            -1,-1,-1,
+            1,-1,1,
+            -1,-1,1,
+
+            -1,-1,-1,
+            1,-1,-1,
+            1,-1,1,
+        ];
     }
 
     setColors() {
-        function randomColor() {
-            return [Math.random(), Math.random(), Math.random(), 1.0];
+        //Samme farge på alle sider:
+        for (let i = 0; i < 36; i++) {
+            this.colors.push(this.color.red, this.color.green, this.color.blue, this.color.alpha);
         }
-        
-
-        this.colors = [];
-        for (let face = 0; face < 360; face++) {
-        let faceColor = [0, 0, 1.0, 1];
-            this.colors.push(...randomColor());
-    }
     }
 
     setTextureCoordinates() {
-        const slices = 420;
-        const loops = 2;
-        this.textureCoordinates = [];
-        for (let slice = 0; slice <= slices; ++slice) {
-            const v = slice / slices;
-            
-        for (let loop = 0; loop <= loops; ++loop) {
-            const u = loop / loops;
+        this.textureCoordinates = [
+            //Forsiden:
+            0,1,
+            0,0,
+            1,0,
 
-            this.textureCoordinates.push(u);
-            this.textureCoordinates.push(v);
-        }
-    }
+            0,1,
+            1,0,
+            1,1,
 
+            //H�yre side:
+            0,1,
+            0,0,
+            1,0,
+
+            0,1,
+            1,0,
+            1,1,
+
+            //Baksiden:
+            0,0,
+            1,0,
+            0,1,
+
+            1,0,
+            1,1,
+            0,1,
+
+            //Venstre side:
+            0,0,
+            1,1,
+            0,1,
+
+            1,0,
+            1,1,
+            0,0,
+
+            //Topp
+            0,0,
+            1,0,
+            0,1,
+
+            0,1,
+            1,0,
+            1,1,
+
+            //Bunn:
+            1,1,
+            0,0,
+            1,0,
+
+            1,1,
+            0,1,
+            0,0
+        ];
     }
 
     /**
      * Denne kalles fra initBuffers() i BaseShape.
      */
     initTextures() {
-        const textureUrls = ['./../../base/textures/metal1.png'];
+        const textureUrls = ['./../../base/textures/dice1.png'];
 
         if (this.textureCoordinates.length > 0) {
             //Laster textureUrls...
@@ -114,7 +186,7 @@ export class Pipe extends BaseShape {
         if (this.wireFrame) {
             this.gl.drawArrays(this.gl.LINE_STRIP, 0, this.vertexCount);
         } else {
-            this.gl.drawArrays(this.gl.TRIANGLE_STRIP, 0, this.vertexCount);
+            this.gl.drawArrays(this.gl.TRIANGLES, 0, this.vertexCount);
         }
     }
 }
