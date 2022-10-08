@@ -10,9 +10,9 @@ export class Camera {
     constructor(
         gl,
         currentlyPressedKeys = [],
-        camPosX=20,
+        camPosX=5,
         camPosY=20,
-        camPosZ=5,
+        camPosZ=35,
         lookAtX=0,
         lookAtY=0,
         lookAtZ=0,

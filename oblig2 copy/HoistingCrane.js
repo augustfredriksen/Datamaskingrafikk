@@ -3,19 +3,19 @@
     buffer og draw for PaperMan
 */
 import {Stack} from '../../base/helpers/Stack.js';
-import {CompositeFigure} from "./CompositeFigure.js";
+import {HoistingCraneComposition} from "./HoistingCraneComposition.js";
 
 /**
  * Klasse som implementerer en sammensatt figur.
  */
-export class CompositeCompositeFigure {
+export class HoistingCrane {
 
     constructor(app) {
         this.app = app;
 
         this.stack = new Stack();
 
-        this.compositeFigure1 = new CompositeFigure(this.app);
+        this.hoistingCraneComposition = new HoistingCraneComposition(this.app);
 
         this.translationX = 0;
     }
@@ -24,7 +24,7 @@ export class CompositeCompositeFigure {
         // Dersom ev. del-figur skal animeres håndterer den det selv.
         //this.cone.handleKeys(elapsed);
         // Flytter hele figuren:
-        this.compositeFigure1.handleKeys(elapsed);
+        this.hoistingCraneComposition.handleKeys(elapsed);
         if (this.app.currentlyPressedKeys[89]) {    //Y
             this.translationX = this.translationX + 1*elapsed;
         }
@@ -40,7 +40,7 @@ export class CompositeCompositeFigure {
         // Tegner:
         modelMatrix.translate(10 -this.translationX*2, 0, 10);
         modelMatrix.scale(.5, .5, .5);
-        this.compositeFigure1.draw(shaderInfo, texturedShaderInfo, elapsed, modelMatrix);
+        this.hoistingCraneComposition.draw(shaderInfo, texturedShaderInfo, elapsed, modelMatrix);
     }
 }
 

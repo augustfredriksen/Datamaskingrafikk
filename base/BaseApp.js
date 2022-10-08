@@ -28,6 +28,8 @@ export class BaseApp {
 		// For tastetrykk/brukerinput:
 		this.currentlyPressedKeys = [];
 
+		this.ambientLightColor = {r: 0.2, g: 0.2, b: 0.2, a:1};
+
 		// Kamera:
 		this.camera = new Camera(this.gl, this.currentlyPressedKeys);
 		this.camera.set();
@@ -64,6 +66,33 @@ export class BaseApp {
 		        gl_FragColor = vColor;
 		    }
 		`;
+		/* const diffuseVertexShaderSourceBase = `
+			attribute vec3 aVertexPosition;
+			attribute vec3 aVertexNormal;
+			uniform mat3 uNormalMatrix;
+			uniform mat4 uModelViewMatrix;
+			uniform mat4 uProjectionMatrix;
+			uniform vec3 uLightDirection;
+			uniform vec3 uAmbientLightColor;
+			uniform vec3 uDiffuseLightColor;
+			varying vec3 vLightWeighting;
+			void main() {
+				vec3 normal = normalize(uNormalMatrix * aVertexNormal);
+				vec3 lightDirectionNorm = normalize(uLightDirection);
+				float diffusLightWeightning = max(dot(normal, lightDirectionNorm), 0.0);
+				vLightWeighting = uAmbientLightColor + (uDiffuseLightColor * diffusLightWeightning);
+				gl_Position = uProjectionMatrix * uModelViewMatrix * vec4(aVertexPosition, 1.0);
+		}
+		`;
+
+		const diffuseFragmentShaderSourceBase = `
+			precision mediump float;
+			varying vec3 vLightWeighting;
+			void main() {
+				gl_FragColor = vec4(vLightWeighting.rgb, 1.0);
+			}
+		`; */
+		
 		// Initialiserer  & kompilerer shader-programmene;
 		const glslBaseShader = new WebGLShader(this.gl, vertexShaderSourceBase, fragmentShaderSourceBase);
 		// Samler all base-shader-info i et JS-objekt.
