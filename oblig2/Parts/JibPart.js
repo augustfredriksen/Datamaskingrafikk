@@ -6,7 +6,7 @@ import {Stack} from '../../base/helpers/Stack.js';
 import { Wire } from '../../base/shapes/CraneWire.js';
 import { CraneJib } from '../Cranes/CraneJib.js';
 import { CraneTowerPeak } from '../Cranes/CraneTowerPeak.js';
-import { CompositeRotateThing } from '../RotateThing.js';
+import { CompositeRotateThing } from './RotateThing.js';
 
 
 /**
@@ -40,14 +40,14 @@ export class JibPart {
             this.translationX = this.translationX - 1*elapsed;
         }
 
-        if (this.app.currentlyPressedKeys[40]) {    //L
+        if (this.app.currentlyPressedKeys[40]) {    //pil ned
             this.rotateY = this.rotateY - 1*elapsed;
             if(this.rotateY <= 0) {
                 this.rotateY = 0;
             }
         }
 
-        if (this.app.currentlyPressedKeys[38]) {    //O
+        if (this.app.currentlyPressedKeys[38]) {    //pil opp
             this.rotateY = this.rotateY + 1*elapsed;
             if(this.rotateY >= 0.90) {
                 this.rotateY = 0.90;

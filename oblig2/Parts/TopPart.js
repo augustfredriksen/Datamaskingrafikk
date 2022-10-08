@@ -9,7 +9,7 @@ import { Wire } from '../../base/shapes/CraneWire.js';
 import { CraneCounterJib } from '../Cranes/CraneCounterJib.js';
 import { CraneJib } from '../Cranes/CraneJib.js';
 import { CraneTowerPeak } from '../Cranes/CraneTowerPeak.js';
-import { CompositeRotateThing } from '../RotateThing.js';
+import { CompositeRotateThing } from './RotateThing.js';
 import { JibPart } from './JibPart.js';
 
 

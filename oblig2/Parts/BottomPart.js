@@ -4,7 +4,7 @@
 */
 import {Stack} from '../../base/helpers/Stack.js';
 import {Platform} from '../../base/shapes/CranePlatform.js';
-import { CompositeWheel } from '../Wheels.js';
+import { CompositeWheel } from './Wheels.js';
 import { Scaffold } from '../Cranes/Scaffold.js';
 import { CraneMast } from '../Cranes/CraneMast.js';
 
@@ -67,6 +67,7 @@ export class BottomPart {
         modelMatrix = this.stack.peekMatrix();
         modelMatrix.translate(wheelPosX, wheelPosY, wheelPosZ);
         modelMatrix.scale(wheelRadius, wheelRadius, wheelWidth);
+        modelMatrix.rotate(this.translationX*60, 0, 0, 1);
         this.compositeWheel.draw(textureShaderInfo, elapsed, modelMatrix);
 
         //Dekk og felg -- Høyre bakhjul
@@ -74,6 +75,7 @@ export class BottomPart {
         modelMatrix.translate(-wheelPosX, wheelPosY, -wheelPosZ);
         modelMatrix.scale(wheelRadius, wheelRadius, wheelWidth);
         modelMatrix.rotate(180, 0, 1, 0);
+        modelMatrix.rotate(-this.translationX*60, 0, 0, 1);
         this.compositeWheel.draw(textureShaderInfo, elapsed, modelMatrix);
 
         //Dekk og felg -- Venstre fremhjul
@@ -81,12 +83,14 @@ export class BottomPart {
         modelMatrix.translate(wheelPosX, wheelPosY, -wheelPosZ);
         modelMatrix.scale(wheelRadius, wheelRadius, wheelWidth);
         modelMatrix.rotate(180, 0, 1, 0);
+        modelMatrix.rotate(-this.translationX*60, 0, 0, 1);
         this.compositeWheel.draw(textureShaderInfo, elapsed, modelMatrix);
 
         //Dekk og felg -- Venstre bakhjul
         modelMatrix = this.stack.peekMatrix();
         modelMatrix.translate(-wheelPosX, wheelPosY, wheelPosZ);
         modelMatrix.scale(wheelRadius, wheelRadius, wheelWidth);
+        modelMatrix.rotate(this.translationX*60, 0, 0, 1);
         this.compositeWheel.draw(textureShaderInfo, elapsed, modelMatrix);
 
         //Stillasparti -- Vertikalt

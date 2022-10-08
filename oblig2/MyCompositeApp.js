@@ -1,6 +1,6 @@
 import {BaseApp} from '../../base/BaseApp.js';
 import {WebGLShader} from '../../base/helpers/WebGLShader.js';
-import {CompositeCompositeFigure} from './CompositeCompositeFigure.js';
+import {HoistingCrane} from './HoistingCrane.js';
 import {XZPlane} from "../../base/shapes/XZPlane.js";
 
 /**
@@ -10,7 +10,7 @@ export class MyCompositeApp extends BaseApp {
 
 	constructor() {
 		super();
-		this.compositeCompositeFigure = new CompositeCompositeFigure(this);
+		this.hoistingCrane = new HoistingCrane(this);
 
 		this.xzplane = new XZPlane(this);
 		this.xzplane.initBuffers();
@@ -45,7 +45,7 @@ export class MyCompositeApp extends BaseApp {
 	 */
 	handleKeys(elapsed) {
 		super.handleKeys(elapsed);
-		this.compositeCompositeFigure.handleKeys(elapsed);
+		this.hoistingCrane.handleKeys(elapsed);
 	}
 
 	/**
@@ -55,6 +55,6 @@ export class MyCompositeApp extends BaseApp {
 		super.draw(elapsed);
 		modelMatrix.scale(5, 5, 5)
 		this.xzplane.draw(this.textureShaderInfo, elapsed, modelMatrix);
-		this.compositeCompositeFigure.draw(this.baseShaderInfo, this.textureShaderInfo, elapsed, modelMatrix);
+		this.hoistingCrane.draw(this.baseShaderInfo, this.textureShaderInfo, elapsed, modelMatrix);
 	}
 }

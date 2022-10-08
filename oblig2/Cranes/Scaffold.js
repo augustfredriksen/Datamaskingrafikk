@@ -51,7 +51,7 @@ export class Scaffold {
         this.stack.pushMatrix(modelMatrix);	 	//Legges på toppen av stacken.
 
 
-        // ---------------------VINKELRETTE RØR og KULER--------------------------
+        // ---------------------VERTIKALE RØR og KULER--------------------------
         modelMatrix = this.stack.peekMatrix();
         modelMatrix.translate(1, 1, -1);
         modelMatrix.scale(pipeScale, pipeHeight, pipeScale);
@@ -96,7 +96,7 @@ export class Scaffold {
         modelMatrix.scale(sphereScale, sphereScale, sphereScale);
         this.sphere.draw(textureShaderInfo, elapsed, modelMatrix);
 
-        // ---------------------SKRÅ RØR--------------------------
+        // ---------------------DIAGONALE RØR--------------------------
         modelMatrix = this.stack.peekMatrix();
         modelMatrix.translate(-1, 1, -1);
         modelMatrix.rotate(-pipeAngle, 1, 0, 0) //Vinkel
@@ -124,7 +124,7 @@ export class Scaffold {
         this.pipe.draw(textureShaderInfo, elapsed, modelMatrix);
 
 
-        // ---------------------LIGGENDE RØR--------------------------
+        // ---------------------HORISONTALE RØR--------------------------
         modelMatrix = this.stack.peekMatrix();
         modelMatrix.translate(1, 5, -1);
         modelMatrix.scale(pipeScale, pipeScale, pipeWidth);
